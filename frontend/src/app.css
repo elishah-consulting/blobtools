@@ -20,10 +20,11 @@ blockquote {
 h1,
 h2,
 h3,
-h4.h5,
+h4,
+h5,
 h6 {
   font-family: 'Fjalla One', sans-serif;
-  @apply pb-4 pt-8 text-primary font-bold;
+  @apply pb-4 text-primary font-bold;
 }
 
 h1 {

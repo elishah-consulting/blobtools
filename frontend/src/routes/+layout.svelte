@@ -39,11 +39,11 @@
 <!-- Splash page navigation bar -->
 {#if is_splash}
   <div class="fixed w-full z-[999]">
-    <nav class="navbar bg-base-100 shadow py-2 lg:p-4">
+    <nav class="navbar bg-base-100 shadow py-2">
       <div class="flex-1">
-        <a class="btn btn-ghost text-xl" href="/">{PUBLIC_PRODUCT_NAME}</a>
+        <a class="btn btn-lg btn-ghost text-xl" href="/">{PUBLIC_PRODUCT_NAME}</a>
         <ul class="flex-1 flex">
-          <li>
+          <!-- <li>
             <a
               href="#pricing"
               class="btn btn-ghost"
@@ -51,16 +51,16 @@
                 document.getElementById('#pricing').scrollIntoView({ behavior: 'smooth' });
               }}>Pricing</a
             >
-          </li>
+          </li> -->
         </ul>
       </div>
       <div class="flex-none">
         {#if access_token}
           <a href="/app" class="btn btn-primary text-md"> Dashboard</a>
         {:else}
-          <div class="flex-1 flex gap-4">
+          <!-- <div class="flex-1 flex gap-4">
             <a href="/login" class="btn btn-outline btn-sm lg:btn-md text-md">Login</a>
-          </div>
+          </div> -->
         {/if}
       </div>
     </nav>
