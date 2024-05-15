@@ -1,6 +1,7 @@
 {
   "packages": [
     "nodejs@latest",
+    "go@latest",
     "pre-commit@latest"
   ],
   "env": {
