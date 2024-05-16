@@ -10,11 +10,13 @@
   import { ZksyncService } from '$lib/services/zksync_service.js';
   import type { Batch } from '../types/Batch.js';
   import D2FieldDisplay from '$lib/components/D2FieldDisplay.svelte';
-  import { formatDateTime } from '$lib/utils.js';
+  import { formatDateTime, hexToBase64 } from '$lib/utils.js';
   import { EthscanService } from '$lib/services/ethscan_service.js';
   import type { EthTransaction } from '../types/EthTransaction.js';
   import type { Blob } from '../types/Blob.js';
   import { BlobService } from '$lib/services/blob_service.js';
+  import { CelestiaService } from '$lib/services/celestia_service.js';
+  import { twMerge } from 'tailwind-merge';
 
   export let data;
   const { is_splash } = data;
@@ -23,16 +25,22 @@
   const zksyncService = new ZksyncService();
   const ethscanService = new EthscanService(ethApiKey);
   const blobService = new BlobService();
+  const celestiaService = new CelestiaService(
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJBbGxvdyI6WyJwdWJsaWMiLCJyZWFkIiwid3JpdGUiLCJhZG1pbiJdfQ.UTrjfJnlVahLF6BYLjqk9hmPWwDta8oJLtMzEPrfQsA',
+  );
 
   let batchId = data?.b || '';
   let batch: Batch;
   let ethtransaction: EthTransaction;
   let blobs: Blob[] = [];
 
+  let uploadState: string = 'idle';
+
   $: {
     batch;
     ethtransaction;
     blobs;
+    uploadState;
   }
 
   onMount(async () => {
@@ -58,9 +66,23 @@
         return blob;
       }) || [],
     );
-
-    console.log(blobs);
   });
+
+  const uploadBlobs = async () => {
+    uploadState = 'uploading';
+    const namespace = 'AAAAAAAAAAAAAAAAAAAAAAAAAEJpDCBNOWAP3dM=';
+    for (const blob of blobs) {
+      if (blob?.data) {
+        const blobDataB64 = hexToBase64(blob?.data);
+        const { response, error } = await celestiaService.uploadData(namespace, blobDataB64);
+        if (error) {
+          console.error(error);
+        }
+        console.log(response);
+      }
+    }
+    uploadState = 'uploaded';
+  };
 </script>
 
 <svelte:head>
@@ -105,33 +127,53 @@
       </div>
     </section>
 
-    <section class="w-full flex flex-col gap-4">
+    <section class="w-full">
       <h3>Blobs</h3>
 
-      <div class="w-full gap-4">
-        <div class="p-4 rounded-md w-full bg-base-100">
-          <h5>Overview</h5>
-          <div class="h-fit w-full">
-            <table class="table table-xs">
-              <thead>
-                <tr>
-                  <th class="max-w-24 overflow-clip truncate ...">Proof</th>
-                  <th>Size</th>
-                  <th>Num. Transactions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {#each blobs as blob, i}
-                  <tr>
-                    <td class="max-w-20 overflow-clip truncate ...">{blob?.proof}</td>
-                    <td>{blob?.size}</td>
-                    <td>{blob?.transactions?.length}</td>
-                  </tr>
-                {/each}
-              </tbody>
-            </table>
+      <div class="grid lg:grid-cols-2 gap-4">
+        <section class="w-full flex flex-col gap-4 h-full">
+          <div class="w-full gap-4 h-full">
+            <div class="p-4 rounded-md w-full bg-base-100 h-full">
+              <h5>Overview</h5>
+              <div class="h-fit w-full">
+                <table class="table table-xs">
+                  <thead>
+                    <tr>
+                      <th class="max-w-24 overflow-clip truncate ...">Proof</th>
+                      <th>Size</th>
+                      <th>Num. Transactions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {#each blobs as blob, i}
+                      <tr>
+                        <td class="max-w-20 overflow-clip truncate ...">{blob?.proof}</td>
+                        <td>{blob?.size}</td>
+                        <td>{blob?.transactions?.length}</td>
+                      </tr>
+                    {/each}
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
-        </div>
+        </section>
+
+        <section class="w-full flex flex-col gap-4 p-4 rounded-md bg-base-100">
+          <D2FieldDisplay title="Number of blobs" value={blobs?.length || 0} />
+          <D2FieldDisplay title="Namespace" value={'AAAAAAAAAAAAAAAAAAAAAAAAAEJpDCBNOWAP3dM'} />
+          <button
+            class={twMerge('btn', uploadState === 'uploaded' ? 'btn-success' : 'btn-primary')}
+            disabled={!blobs?.length}
+            on:click={() => uploadBlobs()}
+          >
+            {uploadState === 'uploading'
+              ? 'Uploading blobs...'
+              : uploadState === 'uploaded'
+                ? 'Blobs uploaded successfully!'
+                : 'Upload blobs to Celestia'}
+          </button>
+        </section>
       </div>
     </section>
   </div>
