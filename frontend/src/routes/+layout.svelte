@@ -85,7 +85,7 @@
             </div>
             <div class="">
               <a href="https://www.daytwo.io" class="btn btn-xs btn-outline btn-success mb-2"
-                >Built with {PUBLIC_PRODUCT_NAME}</a
+                >Built with Daytwo.io</a
               >
             </div>
             <div class="text-xs">Copyright © 2024. All rights reserved.</div>
