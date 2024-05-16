@@ -11,8 +11,8 @@ WORKDIR /app
 
 # Set production environment
 ENV NODE_ENV="production"
-ARG PUBLIC_PRODUCT_NAME="DayTwo.io"
-ARG PUBLIC_FRONTEND_URL="https://daytwo.io"
+ARG PUBLIC_PRODUCT_NAME="Blob.tools"
+ARG PUBLIC_FRONTEND_URL="https://blob.tools"
 ARG PUBLIC_BACKEND_URL="https://daytwo-backend.fly.dev/api"
 ARG PUBLIC_STRIPE_CHECKOUT_LINK="https://buy.stripe.com/test_1diom3io2"
 
@@ -25,7 +25,7 @@ RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y build-essential node-gyp pkg-config python-is-python3
 
 # Install node modules
-COPY --link .npmrc package-lock.json package.json ./
+COPY --link package-lock.json package.json ./
 RUN npm ci --include=dev
 
 # Copy application code

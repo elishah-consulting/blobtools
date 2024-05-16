@@ -56,6 +56,11 @@
       console.error(getEthTransactionErr);
     }
 
+    console.log('----------------');
+    console.log('calling');
+    console.log(ethTransaction);
+    console.log('----------------');
+
     blobs = await Promise.all(
       ethTransaction?.result?.blobVersionedHashes.map(async (blobHash) => {
         const { blob, error: getBlobErr } = await blobService.getBlobByHash(blobHash);
