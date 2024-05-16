@@ -38,8 +38,16 @@ celestia-list-wallet:
 # List wallet key to fund for gas
 	./celestia-node/cel-key list --node.type light --keyring-backend test --p2p.network mocha
 
+celestia-create-test-key:
+	./celestia-node/cel-key add test-key --keyring-backend test --node.type light   --p2p.network mocha
+
+celestia-reveal-auth-token:
+	./celestia-node/build/celestia light auth admin --p2p.network mocha
+# echo "AUTH_TOKEN=$AUTH_TOKEN" >> .env
+# echo "AUTH_TOKEN=$AUTH_TOKEN"
+
 celestia-start-client:
-	./celestia-node/build/celestia light start --core.ip rpc-mocha.pops.one --p2p.network mocha
+	./celestia-node/build/celestia light start --core.ip rpc-mocha.pops.one --p2p.network mocha --keyring.accname test-key
 #  ./celestia-node/build/celestia light start --core.ip <URI> --keyring.accname <key-name> \
   --p2p.network mocha # for wallet funding
 
