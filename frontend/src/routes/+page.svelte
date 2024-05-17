@@ -40,6 +40,7 @@
   let ethtransaction: EthTransaction;
   let blobscanTransaction: BlobscanTransaction;
   let blobs: Blob[] = [];
+  let gasPrice = 0;
 
   let uploadState: string = 'idle';
 
@@ -49,6 +50,7 @@
     blobscanTransaction;
     blobs;
     uploadState;
+    gasPrice;
   }
 
   onMount(async () => {
@@ -64,7 +66,16 @@
       console.error(getEthTransactionErr);
     }
 
-    blobscanTransaction = await blobService.getTransactionByHash(batch?.commitTxHash);
+    const { blobscanTransaction, error: getBlobscanTransactionErr } =
+      await blobService.getTransactionByHash(batch?.commitTxHash);
+    if (getBlobscanTransactionErr) {
+      console.error(getBlobscanTransactionErr);
+    }
+
+    gasPrice =
+      (parseInt(blobscanTransaction?.blobGasUsed || '0') *
+        parseInt(blobscanTransaction?.block?.blobGasPrice || '0')) /
+      Math.pow(10, 18);
 
     blobs = await Promise.all(
       ethTransaction?.result?.blobVersionedHashes.map(async (blobHash) => {
@@ -202,6 +213,19 @@
                 : 'Upload blobs to Celestia'}
           </button>
         </section>
+      </div>
+    </section>
+
+    <section class="w-full">
+      <h3>Pricing</h3>
+
+      <div class="w-full grid gap-4">
+        <div class="p-4 rounded-md w-full bg-base-100">
+          <D2FieldDisplay
+            title="Gas utilised on Ethereum (ETH)"
+            value={!gasPrice ? undefined : `${gasPrice} ETH`}
+          />
+        </div>
       </div>
     </section>
   </div>
