@@ -23,6 +23,7 @@ Install dependencies for the application server:
 Installation details (In terminal)
 - Enter `make`
 - Enter `make launch`
+- Then CD into `frontend` folder and execute `npm run dev`
 
 For Celestia Node,
 - Refer to installation and node operation details at [Celestia's documentation](https://docs.celestia.org/developers/node-tutorial#setting-up-dependencies)
