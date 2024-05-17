@@ -1,6 +1,6 @@
 # Blob.Tools
 
-Blob.Tools is a frictionless UI/UX application to demonstrate blob migration paths to  Celestia and perform initial backup syncs with their original Data availability solution (In this case EIP-4844 targetting ZKSync Era's Blobs).
+Blob.Tools is a frictionless UI/UX application to demonstrate blob migration paths to  Celestia and perform initial backup syncs with their original Data availability solution (In this case EIP-4844 targetting ZKSync Era's Blobs). All you need to do is to add the batch number into the url queried. For example, batch #470000 is at the URL https://blobtools.fly.dev/?b=470000. The system on the backend automatically extracts the blob from ZKSync ERA's EIP-4844 blob and submits it into Celestia and calculates the price differences.
 
 - No need for faucets
 - Direct blob migration queries
