@@ -17,6 +17,7 @@
   import { BlobService } from '$lib/services/blob_service.js';
   import { CelestiaService } from '$lib/services/celestia_service.js';
   import { twMerge } from 'tailwind-merge';
+  import D2Loading from '$lib/components/D2Loading.svelte';
 
   export let data;
   const { is_splash } = data;
@@ -150,13 +151,23 @@
                     </tr>
                   </thead>
                   <tbody>
-                    {#each blobs as blob, i}
-                      <tr>
-                        <td class="max-w-20 overflow-clip truncate ...">{blob?.proof}</td>
-                        <td>{blob?.size}</td>
-                        <td>{blob?.transactions?.length}</td>
-                      </tr>
-                    {/each}
+                    {#if !blobs?.length}
+                      {#each { length: 3 } as _, i}
+                        <tr>
+                          <td><D2Loading /></td>
+                          <td><D2Loading /></td>
+                          <td><D2Loading /></td>
+                        </tr>
+                      {/each}
+                    {:else}
+                      {#each blobs as blob, i}
+                        <tr>
+                          <td class="max-w-20 overflow-clip truncate ...">{blob?.proof}</td>
+                          <td>{blob?.size}</td>
+                          <td>{blob?.transactions?.length}</td>
+                        </tr>
+                      {/each}
+                    {/if}
                   </tbody>
                 </table>
               </div>
