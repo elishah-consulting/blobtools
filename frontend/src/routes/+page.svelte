@@ -18,6 +18,11 @@
   import { CelestiaService } from '$lib/services/celestia_service.js';
   import { twMerge } from 'tailwind-merge';
   import D2Loading from '$lib/components/D2Loading.svelte';
+  import type { BlobscanTransaction } from '../types/BlobscanTransaction.js';
+
+  // namespace
+  // b64: AAAAAAAAAAAAAAAAAAAAAAAAAEJpDCBNOWAP3dM=
+  // hex: 0000000000000000000000000000000000000042690c204d39600fddd3
 
   export let data;
   const { is_splash } = data;
@@ -33,6 +38,7 @@
   let batchId = data?.b || '';
   let batch: Batch;
   let ethtransaction: EthTransaction;
+  let blobscanTransaction: BlobscanTransaction;
   let blobs: Blob[] = [];
 
   let uploadState: string = 'idle';
@@ -40,6 +46,7 @@
   $: {
     batch;
     ethtransaction;
+    blobscanTransaction;
     blobs;
     uploadState;
   }
@@ -57,10 +64,7 @@
       console.error(getEthTransactionErr);
     }
 
-    console.log('----------------');
-    console.log('calling');
-    console.log(ethTransaction);
-    console.log('----------------');
+    blobscanTransaction = await blobService.getTransactionByHash(batch?.commitTxHash);
 
     blobs = await Promise.all(
       ethTransaction?.result?.blobVersionedHashes.map(async (blobHash) => {
@@ -177,7 +181,15 @@
 
         <section class="w-full flex flex-col gap-4 p-4 rounded-md bg-base-100">
           <D2FieldDisplay title="Number of blobs" value={blobs?.length || 0} />
-          <D2FieldDisplay title="Namespace" value={'AAAAAAAAAAAAAAAAAAAAAAAAAEJpDCBNOWAP3dM'} />
+          <div class="grid lg:grid-cols-2 gap-4">
+            <D2FieldDisplay title="Namespace" value={'AAAAAAAAAAAAAAAAAAAAAAAAAEJpDCBNOWAP3dM='} />
+            <a
+              class="btn btn-success"
+              href="https://mocha-4.celenium.io/namespace/00000000000000000000000000000000000042690c204d39600fddd3?tab=Blobs"
+            >
+              View uploaded blobs</a
+            >
+          </div>
           <button
             class={twMerge('btn', uploadState === 'uploaded' ? 'btn-success' : 'btn-primary')}
             disabled={!blobs?.length}
