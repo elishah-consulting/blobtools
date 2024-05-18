@@ -17,6 +17,10 @@ blockquote {
   @apply bg-base-300 p-4 border-l-4 italic my-4 pl-8 py-2 shadow-md shadow-gray-900;
 }
 
+p {
+  @apply mb-4;
+}
+
 h1,
 h2,
 h3,

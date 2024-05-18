@@ -18,6 +18,7 @@
   import { twMerge } from 'tailwind-merge';
   import D2Loading from '$lib/components/D2Loading.svelte';
   import type { BlobscanTransaction } from '../types/BlobscanTransaction.js';
+  import D2Hyperlink from '$lib/components/D2Hyperlink.svelte';
 
   // namespace
   // b64: AAAAAAAAAAAAAAAAAAAAAAAAAEJpDCBNOWAP3dM=
@@ -117,15 +118,27 @@
     <section class="w-full">
       <div class="w-full grid gap-4">
         <div class="p-4 rounded-md w-full bg-base-100">
-          <div class="text-gray-400 uppercase text-xs">
+          <div class="text-gray-400 uppercase text-xs mb-2">
             About <span class="font-mono">Blob.tools</span>
           </div>
-          <span class="font-mono">Blob.Tools</span> is a frictionless UI/UX application to demonstrate
-          blob migration paths to Celestia and perform initial backup syncs with their original Data
-          availability solution (In this case EIP-4844 targetting ZKSync Era's Blobs). All you need to
-          do is to add the batch number into the url queried. For example, batch #470000 is at the URL
-          https://blobtools.fly.dev/?b=470000. The system on the backend automatically extracts the blob
-          from ZKSync ERA's EIP-4844 and submits it into Celestia and calculates the price differences.
+          <div class="text-sm">
+            <p>
+              Blob.Tools is the ultimate frictionless UI/UX application designed to streamline blob
+              migration paths to Celestia and facilitate initial backup syncs with their original
+              Data Availability solution. Leveraging EIP-4844, Blob.Tools targets ZKSync Era's
+              Blobs, offering a seamless, user-friendly experience.
+            </p>
+
+            <p>
+              Simply enter the batch number into the URL query, and you're set. For example,
+              accessing batch #470000 is as easy as navigating to
+              <D2Hyperlink href="https://blobtools.fly.dev/?b=470000"
+                >https://blobtools.fly.dev/?b=470000</D2Hyperlink
+              >. Our robust backend system automatically extracts the blob from ZKSync ERA's
+              EIP-4844, submits it to Celestia, and calculates the price differences—effortlessly
+              providing you with the data you need.
+            </p>
+          </div>
         </div>
       </div>
     </section>
