@@ -4,7 +4,6 @@
    * It is the first page that users see when they visit the site.
    */
 
-  import Typewriter from 'typewriter-effect/dist/core';
   import { PUBLIC_PRODUCT_NAME } from '$env/static/public';
   import { onMount } from 'svelte';
   import { ZksyncService } from '$lib/services/zksync_service.js';
@@ -72,6 +71,8 @@
       console.error(getBlobscanTransactionErr);
     }
 
+    console.log(blobscanTransaction);
+
     gasPrice =
       (parseInt(blobscanTransaction?.blobGasUsed || '0') *
         parseInt(blobscanTransaction?.block?.blobGasPrice || '0')) /
@@ -114,14 +115,17 @@
 <section class="bg-base-200 min-h-screen w-full p-4 pt-24 flex justify-center">
   <div class="flex-1 w-full max-w-5xl flex flex-col gap-10">
     <section class="w-full">
-      <h3>Description</h3>
-
       <div class="w-full grid gap-4">
         <div class="p-4 rounded-md w-full bg-base-100">
-          <D2FieldDisplay
-            title="About Blob.Tools"
-            value="Blob.Tools is a frictionless UI/UX application to demonstrate blob migration paths to Celestia and perform initial backup syncs with their original Data availability solution (In this case EIP-4844 targetting ZKSync Era's Blobs). All you need to do is to add the batch number into the url queried. For example, batch #470000 is at the URL https://blobtools.fly.dev/?b=470000. The system on the backend automatically extracts the blob from ZKSync ERA's EIP-4844 and submits it into Celestia and calculates the price differences."
-          />
+          <div class="text-gray-400 uppercase text-xs">
+            About <span class="font-mono">Blob.tools</span>
+          </div>
+          <span class="font-mono">Blob.Tools</span> is a frictionless UI/UX application to demonstrate
+          blob migration paths to Celestia and perform initial backup syncs with their original Data
+          availability solution (In this case EIP-4844 targetting ZKSync Era's Blobs). All you need to
+          do is to add the batch number into the url queried. For example, batch #470000 is at the URL
+          https://blobtools.fly.dev/?b=470000. The system on the backend automatically extracts the blob
+          from ZKSync ERA's EIP-4844 and submits it into Celestia and calculates the price differences.
         </div>
       </div>
     </section>
@@ -222,7 +226,7 @@
               ? 'Uploading blobs...'
               : uploadState === 'uploaded'
                 ? 'Blobs uploaded successfully!'
-                : 'Upload blobs to Celestia'}
+                : 'Upload blobs to Celestia to save cost'}
           </button>
         </section>
       </div>
@@ -236,6 +240,10 @@
           <D2FieldDisplay
             title="Gas utilised on Ethereum (ETH)"
             value={!gasPrice ? undefined : `${gasPrice} ETH`}
+          />
+          <D2FieldDisplay
+            title="Gas utilised on Ethereum (USD estimate)"
+            value={!gasPrice ? undefined : `${gasPrice * 3000} USD`}
           />
         </div>
       </div>
