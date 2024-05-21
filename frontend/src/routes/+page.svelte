@@ -265,7 +265,7 @@
               <D2FieldDisplay title="Gas utilised on Celestia (TIA)" value={`0.028 TIA`} />
               <D2FieldDisplay
                 title="Gas utilised on Celestia (USD estimate)"
-                value={`${usdTiaPrice} TIA`}
+                value={`${usdTiaPrice} USD`}
               />
             </div>
           </div>
