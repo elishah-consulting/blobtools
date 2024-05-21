@@ -41,6 +41,8 @@
   let blobscanTransaction: BlobscanTransaction;
   let blobs: Blob[] = [];
   let gasPrice = 0;
+  let usdEthPrice: number;
+  let usdTiaPrice: number;
 
   let uploadState: string = 'idle';
 
@@ -51,6 +53,8 @@
     blobs;
     uploadState;
     gasPrice;
+    usdEthPrice = !gasPrice ? 0 : gasPrice * 3000;
+    usdTiaPrice = 0.028 * 9;
   }
 
   onMount(async () => {
@@ -132,8 +136,8 @@
             <p>
               Simply enter the batch number into the URL query, and you're set. For example,
               accessing batch #470000 is as easy as navigating to
-              <D2Hyperlink href="https://blobtools.fly.dev/?b=470000"
-                >https://blobtools.fly.dev/?b=470000</D2Hyperlink
+              <D2Hyperlink href="https://blob.tools/?b=470000"
+                >https://blob.tools/?b=470000</D2Hyperlink
               >. Our robust backend system automatically extracts the blob from ZKSync ERA's
               EIP-4844, submits it to Celestia, and calculates the price differences—effortlessly
               providing you with the data you need.
@@ -248,16 +252,36 @@
     <section class="w-full">
       <h3>Pricing</h3>
 
-      <div class="w-full grid gap-4">
-        <div class="p-4 rounded-md w-full bg-base-100">
-          <D2FieldDisplay
-            title="Gas utilised on Ethereum (ETH)"
-            value={!gasPrice ? undefined : `${gasPrice} ETH`}
-          />
-          <D2FieldDisplay
-            title="Gas utilised on Ethereum (USD estimate)"
-            value={!gasPrice ? undefined : `${gasPrice * 3000} USD`}
-          />
+      <div class="w-full grid lg:grid-cols-2 gap-4">
+        <div class="p-4 rounded-md w-full bg-base-100 col-span-2">
+          Potential cost savings uploading blob to Celestia VS Ethereum: <span
+            class="text-green-500">USD {usdEthPrice - usdTiaPrice}</span
+          >
+        </div>
+
+        <div class="w-full grid gap-4 lg:grid-cols-2 col-span-2">
+          <div class="w-full">
+            <div class="p-4 rounded-md w-full bg-base-100">
+              <D2FieldDisplay title="Gas utilised on Celestia (TIA)" value={`0.028 TIA`} />
+              <D2FieldDisplay
+                title="Gas utilised on Celestia (USD estimate)"
+                value={`${usdTiaPrice} TIA`}
+              />
+            </div>
+          </div>
+
+          <div class="w-full">
+            <div class="p-4 rounded-md w-full bg-base-100">
+              <D2FieldDisplay
+                title="Gas utilised on Ethereum (ETH)"
+                value={!gasPrice ? undefined : `${gasPrice} ETH`}
+              />
+              <D2FieldDisplay
+                title="Gas utilised on Ethereum (USD estimate)"
+                value={`${usdEthPrice} ETH`}
+              />
+            </div>
+          </div>
         </div>
       </div>
     </section>
