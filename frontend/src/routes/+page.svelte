@@ -278,7 +278,7 @@
               />
               <D2FieldDisplay
                 title="Gas utilised on Ethereum (USD estimate)"
-                value={`${usdEthPrice} ETH`}
+                value={`${usdEthPrice} USD`}
               />
             </div>
           </div>
