@@ -262,6 +262,12 @@
         <div class="w-full grid gap-4 lg:grid-cols-2 col-span-2">
           <div class="w-full">
             <div class="p-4 rounded-md w-full bg-base-100">
+              <progress
+                class="progress progress-accent w-56"
+                value={(usdTiaPrice / (usdEthPrice + 0.001)) * 100}
+                max="100"
+              ></progress>
+
               <D2FieldDisplay title="Gas utilised on Celestia (TIA)" value={`0.028 TIA`} />
               <D2FieldDisplay
                 title="Gas utilised on Celestia (USD estimate)"
@@ -272,6 +278,8 @@
 
           <div class="w-full">
             <div class="p-4 rounded-md w-full bg-base-100">
+              <progress class="progress progress-accent w-56" value="100" max="100"></progress>
+
               <D2FieldDisplay
                 title="Gas utilised on Ethereum (ETH)"
                 value={!gasPrice ? undefined : `${gasPrice} ETH`}
